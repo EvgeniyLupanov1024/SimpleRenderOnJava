@@ -3,3 +3,6 @@ all: Display.class
 
 Display.class: Display.java
 	javac Display.java
+
+clear:
+	rm *.class

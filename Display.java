@@ -13,8 +13,10 @@ public class Display extends Canvas implements Runnable
     private JFrame frame;
 
     private static String title = "Рендрю кудик в 3d";
-    private static final int WIDTH = 800;
-    private static final int HEIGTH = 600;
+    public static final int WIDTH = 800;
+    public static final int HEIGTH = 600;
+    public static final int HALF_WIDTH = WIDTH/2;
+    public static final int HALF_HEIGTH = HEIGTH/2;
     private static Color bgColor = new Color(11, 22, 55);
 
     private static boolean running = false;
@@ -107,6 +109,13 @@ public class Display extends Canvas implements Runnable
 
         g.setColor(bgColor);
         g.fillRect(0, 0, getWidth(), getHeight());
+
+        Polygon3D poligon = new Polygon3D(
+            new Point3D(0, 50, 0),
+            new Point3D(50, 0, 0),
+            new Point3D(0, 0, 50)
+        );
+        poligon.render(g);
 
         g.dispose();
         bs.show();
