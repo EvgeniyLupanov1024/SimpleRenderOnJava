@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 public class Display extends Canvas implements Runnable
@@ -20,6 +23,7 @@ public class Display extends Canvas implements Runnable
     private static Color bgColor = new Color(11, 22, 55);
 
     private static boolean running = false;
+    private static List<RendrableObject> scene = new ArrayList<RendrableObject>();
 
     public Display() 
     {
@@ -98,8 +102,14 @@ public class Display extends Canvas implements Runnable
         BufferStrategy bs = getBufferStrategy();
         if (bs == null) {
             createBufferStrategy(2);
-            return;
         }
+
+        scene.add(new MagicCube(100));
+    }
+
+    private void update()
+    {
+        
     }
 
     private void render()
@@ -110,15 +120,11 @@ public class Display extends Canvas implements Runnable
         g.setColor(bgColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        MagicCube justCube = new MagicCube(100);
-        justCube.render(g);
+        for (RendrableObject rendrableObject : scene) {
+            rendrableObject.render(g);
+        }
 
         g.dispose();
         bs.show();
-    }
-
-    private void update()
-    {
-        
     }
 }

@@ -7,11 +7,13 @@ public class Polygon3D
 {
     private Color color;
     private Point3D[] points3d;
+    public Point3D center;
 
     public Polygon3D(Color color, Point3D... points3d)
     {
         this.color = color;
         this.points3d = points3d;
+        this.center = calcCenter();
     }
 
     public void render(Graphics g)
@@ -27,5 +29,25 @@ public class Polygon3D
 
         g.setColor(color);
         g.fillPolygon(polygon);;
+    }
+
+    public Point3D calcCenter()
+    {
+        double x = 0;
+        double y = 0;
+        double z = 0;
+
+        for (Point3D point3d : points3d) 
+        {
+            x += point3d.x;
+            y += point3d.y;
+            z += point3d.z;
+        }
+
+        x /= points3d.length;
+        y /= points3d.length;
+        z /= points3d.length;
+
+        return new Point3D(x, y, z);
     }
 }

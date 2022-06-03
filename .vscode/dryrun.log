@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/elupanov/projects/SimpleRenderOnJava'
-javac Display.java
-java Display
-make: Leaving directory '/home/elupanov/projects/SimpleRenderOnJava'
- 

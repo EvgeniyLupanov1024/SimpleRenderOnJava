@@ -1,11 +1,8 @@
-import java.util.spi.ToolProvider;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class MagicCube 
+public class MagicCube extends RendrableObject
 {
-    public Polygon3D[] magicPoligons;
-
     public MagicCube(int size)
     {
         this(size, new Point3D(0, 0, 0));
@@ -29,18 +26,20 @@ public class MagicCube
         Polygon3D left = new Polygon3D(Color.CYAN, front_top_left, back_top_left, back_down_left, front_down_left);
         Polygon3D right = new Polygon3D(Color.YELLOW, back_top_right, front_top_right, front_down_right, back_down_right);
 
-        magicPoligons = new Polygon3D[] {
-            front,
-            back,
-            top,
-            down,
-            left,
-            right,
-        };
+        magicPoligons.add(front);
+        magicPoligons.add(back);
+        magicPoligons.add(top);
+        magicPoligons.add(down);
+        magicPoligons.add(left);
+        magicPoligons.add(right);
+
+        sortPolygons();
     }
 
     public void render(Graphics g)
     {
+        sortPolygons();
+
         for (Polygon3D polygon3d : magicPoligons) 
         {
             polygon3d.render(g);    
