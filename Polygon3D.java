@@ -5,10 +5,12 @@ import java.awt.Color;
 
 public class Polygon3D 
 {
+    private Color color;
     private Point3D[] points3d;
 
-    public Polygon3D(Point3D... points3d)
+    public Polygon3D(Color color, Point3D... points3d)
     {
+        this.color = color;
         this.points3d = points3d;
     }
 
@@ -23,7 +25,7 @@ public class Polygon3D
             polygon.addPoint(point.x, point.y);
         }
 
-        g.setColor(new Color(55, 88, 99));
+        g.setColor(color);
         g.fillPolygon(polygon);;
     }
 }
