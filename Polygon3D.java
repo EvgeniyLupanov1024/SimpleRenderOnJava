@@ -13,7 +13,7 @@ public class Polygon3D
     {
         this.color = color;
         this.points3d = points3d;
-        this.center = refreshCenter();
+        this.refreshCenter();
     }
 
     public void render(Graphics g)
@@ -31,7 +31,7 @@ public class Polygon3D
         g.fillPolygon(polygon);;
     }
 
-    public Point3D refreshCenter()
+    public void refreshCenter()
     {
         double x = 0;
         double y = 0;
@@ -48,6 +48,6 @@ public class Polygon3D
         y /= points3d.length;
         z /= points3d.length;
 
-        return new Point3D(x, y, z);
+        center = new Point3D(x, y, z);
     }
 }

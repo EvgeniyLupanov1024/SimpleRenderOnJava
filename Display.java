@@ -1,5 +1,6 @@
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Point;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,6 +9,7 @@ import java.awt.image.BufferStrategy;
 import java.util.List;
 import java.util.ArrayList;
 
+import java.awt.MouseInfo;
 import javax.swing.JFrame;
 
 public class Display extends Canvas implements Runnable
@@ -24,6 +26,12 @@ public class Display extends Canvas implements Runnable
 
     private static boolean running = false;
     private static List<Object> scene = new ArrayList<Object>();
+
+    public static double mouseLastX;
+    public static double mouseDeltaX;
+    public static double mouseLastY;
+    public static double mouseDeltaY;
+    public static boolean mouseLeft;
 
     public Display() 
     {
@@ -109,9 +117,20 @@ public class Display extends Canvas implements Runnable
 
     private void update()
     {
+        inputUpdate();
+
         for (Object object : scene) {
             object.update();
         }
+    }
+
+    private void inputUpdate()
+    {
+        Point mousePoint = MouseInfo.getPointerInfo().getLocation();
+        mouseDeltaX = mousePoint.x - mouseLastX;
+        mouseDeltaY = mousePoint.y - mouseLastY;
+        mouseLastX = mousePoint.x;
+        mouseLastY = mousePoint.y;
     }
 
     private void render()

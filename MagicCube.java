@@ -3,6 +3,9 @@ import java.awt.Graphics;
 
 public class MagicCube extends Object
 {
+    public double rotateSpeedY = 0;
+    public double rotateSpeedZ = 0;
+
     public MagicCube(int size)
     {
         this(size, new Point3D(0, 0, 0));
@@ -33,7 +36,7 @@ public class MagicCube extends Object
         Polygon3D front = new Polygon3D(Color.RED, front_top_left, front_top_right, front_down_right, front_down_left);
         Polygon3D back = new Polygon3D(Color.BLACK, back_top_left, back_top_right, back_down_right, back_down_left);
         Polygon3D top = new Polygon3D(Color.ORANGE, front_top_left, front_top_right, back_top_right, back_top_left);
-        Polygon3D down = new Polygon3D(Color.BLUE, back_down_left, front_down_right, front_down_right, front_down_left);
+        Polygon3D down = new Polygon3D(Color.BLUE, back_down_left, back_down_right, front_down_right, front_down_left);
         Polygon3D left = new Polygon3D(Color.CYAN, front_top_left, back_top_left, back_down_left, front_down_left);
         Polygon3D right = new Polygon3D(Color.YELLOW, back_top_right, front_top_right, front_down_right, back_down_right);
 
@@ -59,9 +62,21 @@ public class MagicCube extends Object
 
     public void update()
     {
-        rotateAxisX(0.78);
-        rotateAxisZ(0.23);
+        if (Display.mouseLeft) {
+            rotateSpeedY = - Display.mouseDeltaY / 2;
+            rotateSpeedZ = Display.mouseDeltaX / 2;
+        }
 
+        if (rotateSpeedY > 0.05 || (rotateSpeedY < -0.05)) {
+            rotateAxisY(rotateSpeedY);
+            rotateSpeedY *= 0.9;
+        }
+
+        if (rotateSpeedZ > 0.05 || (rotateSpeedZ < -0.05)) {
+            rotateAxisZ(rotateSpeedZ);
+            rotateSpeedZ *= 0.9;
+        }
+        
         for (Polygon3D magicPoligon : magicPoligons) 
         {
             magicPoligon.refreshCenter();
@@ -77,6 +92,19 @@ public class MagicCube extends Object
             angle += Math.toRadians(degrees);
 
             point3d.y = radius * Math.sin(angle);
+            point3d.z = radius * Math.cos(angle);
+        }
+    }
+
+    public void rotateAxisY(double degrees)
+    {
+        for (Point3D point3d : magicPoints) 
+        {
+            double radius = Math.sqrt(point3d.x * point3d.x + point3d.z * point3d.z);
+            double angle = Math.atan2(point3d.x, point3d.z);
+            angle += Math.toRadians(degrees);
+
+            point3d.x = radius * Math.sin(angle);
             point3d.z = radius * Math.cos(angle);
         }
     }
