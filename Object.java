@@ -4,9 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
-public abstract class RendrableObject 
+public abstract class Object 
 {
     public List<Polygon3D> magicPoligons = new ArrayList<Polygon3D>();
+    public List<Point3D> magicPoints = new ArrayList<Point3D>();
+    public Point3D center;
 
     public void sortPolygons() 
     {
@@ -21,4 +23,5 @@ public abstract class RendrableObject
     }
 
     abstract public void render(Graphics g);
+    abstract public void update();
 }

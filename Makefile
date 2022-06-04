@@ -1,20 +1,26 @@
-all: Display Point3D Polygon3D PointDisplayTranslater MagicCube
+all: Display.class Point3D.class Polygon3D.class PointDisplayTranslater.class MagicCube.class Object.class
 	java Display
 
-Display: Display.java
+Display.class: Display.java
 	javac Display.java
 
-Point3D: Point3D.java
+# рендер
+Point3D.class: Point3D.java
 	javac Point3D.java
 
-Polygon3D: Polygon3D.java
+Polygon3D.class: Polygon3D.java
 	javac Polygon3D.java
 
-PointDisplayTranslater: PointDisplayTranslater.java
+PointDisplayTranslater.class: PointDisplayTranslater.java
 	javac PointDisplayTranslater.java
 
-MagicCube: MagicCube.java
+# объекты
+Object.class: Object.java
+	javac Object.java
+
+MagicCube.class: MagicCube.java
 	javac MagicCube.java
+
 
 clear:
 	rm *.class

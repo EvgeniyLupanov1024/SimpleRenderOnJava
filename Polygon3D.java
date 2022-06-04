@@ -5,15 +5,15 @@ import java.awt.Color;
 
 public class Polygon3D 
 {
-    private Color color;
-    private Point3D[] points3d;
+    public Color color;
+    public Point3D[] points3d;
     public Point3D center;
 
     public Polygon3D(Color color, Point3D... points3d)
     {
         this.color = color;
         this.points3d = points3d;
-        this.center = calcCenter();
+        this.center = refreshCenter();
     }
 
     public void render(Graphics g)
@@ -31,7 +31,7 @@ public class Polygon3D
         g.fillPolygon(polygon);;
     }
 
-    public Point3D calcCenter()
+    public Point3D refreshCenter()
     {
         double x = 0;
         double y = 0;

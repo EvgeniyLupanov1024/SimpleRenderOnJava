@@ -23,7 +23,7 @@ public class Display extends Canvas implements Runnable
     private static Color bgColor = new Color(11, 22, 55);
 
     private static boolean running = false;
-    private static List<RendrableObject> scene = new ArrayList<RendrableObject>();
+    private static List<Object> scene = new ArrayList<Object>();
 
     public Display() 
     {
@@ -109,7 +109,9 @@ public class Display extends Canvas implements Runnable
 
     private void update()
     {
-        
+        for (Object object : scene) {
+            object.update();
+        }
     }
 
     private void render()
@@ -120,8 +122,8 @@ public class Display extends Canvas implements Runnable
         g.setColor(bgColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        for (RendrableObject rendrableObject : scene) {
-            rendrableObject.render(g);
+        for (Object object : scene) {
+            object.render(g);
         }
 
         g.dispose();
