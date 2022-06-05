@@ -21,8 +21,8 @@ import java.awt.event.MouseListener;
 public class Display extends JFrame implements KeyListener, MouseListener
 {
     public static String title = "Рендрю кудик в 3d";
-    public static final int WIDTH = 1000;
-    public static final int HEIGTH = 700;
+    public static final int WIDTH = 1200;
+    public static final int HEIGTH = 800;
     public static final int HALF_WIDTH = WIDTH / 2;
     public static final int HALF_HEIGTH = HEIGTH / 2;
     public static Color bgColor = new Color(11, 22, 55);
@@ -110,11 +110,6 @@ public class Display extends JFrame implements KeyListener, MouseListener
         }
 
         scene.add(new MagicCube(60));
-         
-        scene.add(new MagicCube(60, new Point3D(200, 200, 200)));
-        scene.add(new MagicCube(60, new Point3D(-200, -200, -200)));
-        scene.add(new MagicCube(60, new Point3D(-200, 200, -200)));
-        scene.add(new MagicCube(60, new Point3D(200, -200, 200)));
     }
 
     private void update()
@@ -193,6 +188,21 @@ public class Display extends JFrame implements KeyListener, MouseListener
 
             case KeyEvent.VK_L:
                 System.out.println();
+                break;
+
+            case KeyEvent.VK_W:
+                MagicCube.rotateMode = PointDisplayTranslater.RotateMode.WORLD_CENTER;
+                break;
+
+            case KeyEvent.VK_S:
+                MagicCube.rotateMode = PointDisplayTranslater.RotateMode.SELF_CENTER;
+                break;
+
+            case KeyEvent.VK_A:
+                scene.add(new MagicCube(60, new Point3D(200, 200, 200)));
+                scene.add(new MagicCube(60, new Point3D(-200, -200, -200)));
+                scene.add(new MagicCube(60, new Point3D(-200, 200, -200)));
+                scene.add(new MagicCube(60, new Point3D(200, -200, 200)));
                 break;
 
             case KeyEvent.VK_ESCAPE:

@@ -5,6 +5,9 @@ public class MagicCube extends Object
 {
     public double rotateSpeedY = 0;
     public double rotateSpeedZ = 0;
+    public Point3D rotateCenter;
+
+    public static PointDisplayTranslater.RotateMode rotateMode = PointDisplayTranslater.RotateMode.WORLD_CENTER; 
 
     public MagicCube(int size)
     {
@@ -67,53 +70,70 @@ public class MagicCube extends Object
             rotateSpeedZ = Display.mouseDeltaX / 2;
         }
 
+        switch(rotateMode) 
+        {
+            case WORLD_CENTER:
+                rotateCenter = PointDisplayTranslater.worldCenter;
+                break;
+
+            case SELF_CENTER:
+                rotateCenter = center;
+                break;
+        }
+
         if (rotateSpeedY > 0.05 || (rotateSpeedY < -0.05)) {
-            rotateAxisY(rotateSpeedY);
+            rotateAxisY(rotateSpeedY, rotateCenter);
             rotateSpeedY *= 0.93;
         }
 
         if (rotateSpeedZ > 0.05 || (rotateSpeedZ < -0.05)) {
-            rotateAxisZ(rotateSpeedZ);
+            rotateAxisZ(rotateSpeedZ, rotateCenter);
             rotateSpeedZ *= 0.93;
         }
     }
 
-    public void rotateAxisX(double degrees)
+    public void rotateAxisX(double degrees, Point3D rotateCenter)
     {
         for (Point3D point3d : magicPoints) 
         {
-            double radius = Math.sqrt(point3d.y * point3d.y + point3d.z * point3d.z);
-            double angle = Math.atan2(point3d.y, point3d.z);
+            Point3D locateCoordinat = new Point3D(point3d.x - rotateCenter.x, point3d.y - rotateCenter.y, point3d.z - rotateCenter.z);
+
+            double radius = Math.sqrt(locateCoordinat.y * locateCoordinat.y + locateCoordinat.z * locateCoordinat.z);
+            double angle = Math.atan2(locateCoordinat.y, locateCoordinat.z);
             angle += Math.toRadians(degrees);
 
-            point3d.y = radius * Math.sin(angle);
-            point3d.z = radius * Math.cos(angle);
+            point3d.y = radius * Math.sin(angle) + rotateCenter.y;
+            point3d.z = radius * Math.cos(angle) + rotateCenter.z;
         }
     }
 
-    public void rotateAxisY(double degrees)
+    public void rotateAxisY(double degrees, Point3D rotateCenter)
     {
         for (Point3D point3d : magicPoints) 
         {
-            double radius = Math.sqrt(point3d.x * point3d.x + point3d.z * point3d.z);
-            double angle = Math.atan2(point3d.x, point3d.z);
+            Point3D locateCoordinat = new Point3D(point3d.x - rotateCenter.x, point3d.y - rotateCenter.y, point3d.z - rotateCenter.z);
+
+            double radius = Math.sqrt(locateCoordinat.x * locateCoordinat.x + locateCoordinat.z * locateCoordinat.z);
+            double angle = Math.atan2(locateCoordinat.x, locateCoordinat.z);
             angle += Math.toRadians(degrees);
 
-            point3d.x = radius * Math.sin(angle);
-            point3d.z = radius * Math.cos(angle);
+            point3d.x = radius * Math.sin(angle) + rotateCenter.x;
+            point3d.z = radius * Math.cos(angle) + rotateCenter.z;
         }
     }
 
-    public void rotateAxisZ(double degrees)
+    public void rotateAxisZ(double degrees, Point3D rotateCenter)
     {
         for (Point3D point3d : magicPoints) 
         {
-            double radius = Math.sqrt(point3d.x * point3d.x + point3d.y * point3d.y);
-            double angle = Math.atan2(point3d.x, point3d.y);
+            Point3D locateCoordinat = new Point3D(point3d.x - rotateCenter.x, point3d.y - rotateCenter.y, point3d.z - rotateCenter.z);
+
+            double radius = Math.sqrt(locateCoordinat.x * locateCoordinat.x + locateCoordinat.y * locateCoordinat.y);
+            double angle = Math.atan2(locateCoordinat.x, locateCoordinat.y);
             angle += Math.toRadians(degrees);
 
-            point3d.x = radius * Math.sin(angle);
-            point3d.y = radius * Math.cos(angle);
+            point3d.x = radius * Math.sin(angle) + rotateCenter.x;
+            point3d.y = radius * Math.cos(angle) + rotateCenter.y;
         }
     }
-}
+} 
