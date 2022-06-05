@@ -1,6 +1,7 @@
-import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Point;
+
+import java.util.Collections;
+import java.util.Comparator;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,20 +13,23 @@ import java.util.ArrayList;
 import java.awt.MouseInfo;
 import javax.swing.JFrame;
 
-public class Display extends Canvas implements Runnable
-{
-    private Thread thread;
-    private JFrame frame;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-    private static String title = "Рендрю кудик в 3d";
-    public static final int WIDTH = 800;
-    public static final int HEIGTH = 600;
+public class Display extends JFrame implements KeyListener, MouseListener
+{
+    public static String title = "Рендрю кудик в 3d";
+    public static final int WIDTH = 1000;
+    public static final int HEIGTH = 700;
     public static final int HALF_WIDTH = WIDTH / 2;
     public static final int HALF_HEIGTH = HEIGTH / 2;
-    private static Color bgColor = new Color(11, 22, 55);
+    public static Color bgColor = new Color(11, 22, 55);
 
-    private static boolean running = false;
-    private static List<Object> scene = new ArrayList<Object>();
+    public static boolean running = false;
+    public static boolean updating = true;
+    public static List<Object> scene = new ArrayList<Object>();
 
     public static double mouseLastX;
     public static double mouseDeltaX;
@@ -35,46 +39,36 @@ public class Display extends Canvas implements Runnable
 
     public Display() 
     {
-        this.frame = new JFrame();
+        setSize(WIDTH, HEIGTH);
+        setTitle(title);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Dimension size = new Dimension(WIDTH, HEIGTH);
-        this.setPreferredSize(size);
+        addKeyListener(this);
+        addMouseListener(this);
+
+        running = true;
+        setVisible(true);
     }
 
     public static void main (String[] arg)
     {
         Display display = new Display();
-        display.frame.add(display);
-        
-        display.frame.setTitle(title);
-        display.frame.pack(); // автоустановка размера из всех добавленных элементов
-        display.frame.setResizable(false);
-        display.frame.setLocationRelativeTo(null);
-        display.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        display.frame.setVisible(true);
         display.start();
     }
 
     public void start()
     {
         running = true;
-        this.thread = new Thread(this, "Display");
-        this.thread.start();
+        this.run();
     }
 
     public void stop()
     {
         running = false;
-
-        try {
-            this.thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
     public void run() 
     {
         long lastTimeUpdate = System.nanoTime();
@@ -91,7 +85,10 @@ public class Display extends Canvas implements Runnable
 
                 lastTimeUpdate = System.nanoTime();
 
-                update();
+                if (updating) {
+                    update();
+                }
+
                 render();
                 ++framesCount;
             }
@@ -99,7 +96,7 @@ public class Display extends Canvas implements Runnable
             if (System.currentTimeMillis() - lastTimeMs > 1000) {
                 
                 lastTimeMs = System.currentTimeMillis();
-                this.frame.setTitle(title + " | " + framesCount + " fps");
+                this.setTitle(title + " | " + framesCount + " fps");
                 framesCount = 0;
             }
         }
@@ -112,14 +109,20 @@ public class Display extends Canvas implements Runnable
             createBufferStrategy(2);
         }
 
-        scene.add(new MagicCube(100));
+        scene.add(new MagicCube(60));
+         
+        scene.add(new MagicCube(60, new Point3D(200, 200, 200)));
+        scene.add(new MagicCube(60, new Point3D(-200, -200, -200)));
+        scene.add(new MagicCube(60, new Point3D(-200, 200, -200)));
+        scene.add(new MagicCube(60, new Point3D(200, -200, 200)));
     }
 
     private void update()
     {
         inputUpdate();
 
-        for (Object object : scene) {
+        for (Object object : scene) 
+        {
             object.update();
         }
     }
@@ -141,11 +144,100 @@ public class Display extends Canvas implements Runnable
         g.setColor(bgColor);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Object object : scene) {
+        sortObjects();
+
+        for (Object object : scene) 
+        {
             object.render(g);
         }
 
         g.dispose();
         bs.show();
+    }
+
+    public void sortObjects() 
+    {
+        for (Object object : scene) 
+        {
+            object.refreshCenter();
+        }
+
+        Collections.sort(scene, new Comparator<Object>(){ // todo -- быстро сортировать уже отсортированные
+            
+            @Override
+            public int compare(Object o1, Object o2)
+            {
+                return (int) (o2.center.x - o1.center.x);
+            }
+        });
+    }
+
+    /*
+     * key handler
+     */
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        switch (e.getKeyCode()) 
+        {
+            case KeyEvent.VK_SPACE:
+                updating = !updating;
+                break;
+
+            case KeyEvent.VK_L:
+                System.out.println();
+                break;
+
+            case KeyEvent.VK_ESCAPE:
+                System.exit(0);
+                break;
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /*
+     * mouse handler
+     */
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) 
+    {
+        mouseLeft = true;    
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) 
+    {
+        mouseLeft = false;    
     }
 }

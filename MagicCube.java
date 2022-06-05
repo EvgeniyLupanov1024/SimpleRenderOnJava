@@ -34,10 +34,10 @@ public class MagicCube extends Object
         magicPoints.add(back_down_right);
 
         Polygon3D front = new Polygon3D(Color.RED, front_top_left, front_top_right, front_down_right, front_down_left);
-        Polygon3D back = new Polygon3D(Color.BLACK, back_top_left, back_top_right, back_down_right, back_down_left);
+        Polygon3D back = new Polygon3D(Color.CYAN, back_top_left, back_top_right, back_down_right, back_down_left);
         Polygon3D top = new Polygon3D(Color.ORANGE, front_top_left, front_top_right, back_top_right, back_top_left);
         Polygon3D down = new Polygon3D(Color.BLUE, back_down_left, back_down_right, front_down_right, front_down_left);
-        Polygon3D left = new Polygon3D(Color.CYAN, front_top_left, back_top_left, back_down_left, front_down_left);
+        Polygon3D left = new Polygon3D(Color.BLACK, front_top_left, back_top_left, back_down_left, front_down_left);
         Polygon3D right = new Polygon3D(Color.YELLOW, back_top_right, front_top_right, front_down_right, back_down_right);
 
         magicPoligons.add(front);
@@ -69,17 +69,12 @@ public class MagicCube extends Object
 
         if (rotateSpeedY > 0.05 || (rotateSpeedY < -0.05)) {
             rotateAxisY(rotateSpeedY);
-            rotateSpeedY *= 0.9;
+            rotateSpeedY *= 0.93;
         }
 
         if (rotateSpeedZ > 0.05 || (rotateSpeedZ < -0.05)) {
             rotateAxisZ(rotateSpeedZ);
-            rotateSpeedZ *= 0.9;
-        }
-        
-        for (Polygon3D magicPoligon : magicPoligons) 
-        {
-            magicPoligon.refreshCenter();
+            rotateSpeedZ *= 0.93;
         }
     }
 
