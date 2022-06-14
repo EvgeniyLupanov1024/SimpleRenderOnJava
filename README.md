@@ -1,5 +1,5 @@
-<img alt="one cube" align="middle" src="https://raw.githubusercontent.com/LupanovEvgeniyHTML/SimpleRenderOnJava/master/media/one_cube.gif"/>
-<img alt="more cube" align="middle" src="https://raw.githubusercontent.com/LupanovEvgeniyHTML/SimpleRenderOnJava/master/media/more_cube.gif"/>
+<img alt="one cube" align="center" src="https://raw.githubusercontent.com/LupanovEvgeniyHTML/LupanovEvgeniyHTML/main/projects_media/SimpleRenderOnJava/one_cube.gif"/>
+<img alt="more cube" align="center" src="https://raw.githubusercontent.com/LupanovEvgeniyHTML/LupanovEvgeniyHTML/main/projects_media/SimpleRenderOnJava/more_cube.gif"/>
 
 ## Описание
 
